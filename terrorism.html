@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Single layer | CARTO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <!-- Include CARTO VL JS -->
+  <script src="js/carto-vl.js"></script>
+  <!-- Include Mapbox GL JS -->
+  <script src="js/mapbox-gl-dev.js"></script>
+  <!-- Include Mapbox GL CSS -->
+  <link href="css/mapbox-gl-dev.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    #map {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+      center: [0, 30],
+      zoom: 2,
+      dragRotate: false
+    });
+
+    carto.setDefaultAuth({
+      user: 'piensaenpixel',
+      apiKey: 'default_public'
+    });
+    const s = carto.expressions;
+    const source = new carto.source.Dataset('globalterrorismdb_0617dist_1');
+    const viz = new carto.Viz(`
+      width: blend(
+             blend(
+              1, 2, zoom()>4), (sqrt($nkill * zoom()) / 4) + 4
+              zoom()>6
+              )
+      color: opacity(ramp(log($nkill), OrYel) ,0.6)
+      resolution: 0.9
+      order: asc(width())
+    `);
+    const layer = new carto.Layer('layer', source, viz);
+
+    layer.addTo(map, 'watername_ocean');
+
+    const interactivity = new carto.Interactivity(layer);
+      interactivity.on('featureHover', e => {
+          const feat = e.features[0];
+          if (feat) {
+              console.log(feat);
+              const oldColor = feat.color;
+              feat.color.blendTo("0.8*opacity(ramp(log($nkill), OrYel) ,0.6)", 300);
+          }
+      });
+
+      interactivity.on('featureLeave', e => {
+          const feat = e.features[0];
+          if (feat) {
+              console.log(feat);
+              feat.color.reset();
+          }
+      });
+
+
+  </script>
+</body>
+</html>
