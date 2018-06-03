@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Single layer | CARTO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <!-- Include CARTO VL JS -->
+  <script src="js/carto-vl.js"></script>
+  <!-- Include Mapbox GL JS -->
+  <script src="js/mapbox-gl-dev.js"></script>
+  <!-- Include Mapbox GL CSS -->
+  <link href="css/mapbox-gl-dev.css" rel="stylesheet" />
+  <link href="css/perfect-scrollbar.css" rel="stylesheet" />
+  <script src="js/perfect-scrollbar.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    a {
+      color: #000;
+      text-decoration: none;
+    }
+    ul {
+      list-style-type: none;
+    }
+
+    #map {
+     flex: 1;
+   }
+    #scroll {
+      width: 400px;
+      padding: 40px;
+      display: flex;
+    }
+    #scroll h2 {
+      font: 100 42px/1.4 'Roboto';
+      margin-bottom: 20px;
+    }
+    #scroll h2 + p::first-letter {
+      float: left;
+      padding-right: 8px;
+      padding-left: 3px;
+      font: 300 60px/1.4 'Roboto Slab';
+      margin-top: -10px;
+    }
+    #scroll p {
+      font: 300 14px/1.6 'Roboto';
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    #scroll p + h2 {
+      padding-top: 60px;
+    }
+
+    #container {
+      position: relative;
+      padding-right: 20px;
+    }
+
+    #loading {
+      position: absolute;
+      background: rgba(46, 60, 67, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 2;
+      opacity: 1;
+      transition: opacity 300ms;
+    }
+    .CDB-LoaderIcon--big {
+      width: 40px;
+      height: 40px;
+    }
+    .CDB-LoaderIcon-spinner {
+      width: 40px;
+      height: 40px;
+      animation: rotate 2s linear infinite;
+    }
+    .CDB-LoaderIcon-path {
+        stroke: rgba(255,255,255,.88);
+        stroke-linecap: round;
+        animation: dash 1.5s ease-in-out infinite;
+        stroke-width: 4px
+    }
+    @keyframes dash {
+        0% {
+            stroke-dasharray: 1,150;
+            stroke-dashoffset: 0
+        }
+
+        50% {
+            stroke-dasharray: 90,150;
+            stroke-dashoffset: -35
+        }
+
+        100% {
+            stroke-dasharray: 90,150;
+            stroke-dashoffset: -124
+        }
+    }
+
+    @keyframes rotate {
+        100% {
+            transform: rotate(360deg)
+        }
+    }
+
+
+
+    @media (max-width: 600px) {
+      body {
+        flex-direction: column;
+      }
+      #scroll {
+        order: 2;
+        width: auto;
+        height: 50%;
+        padding: 24px;
+      }
+      #map {
+        order: 1;
+        width: 100%;
+        height: auto;
+      }
+      #scroll h2 {
+        font: 100 32px/1.4 'Roboto';
+        margin-bottom: 12px;
+      }
+      #scroll p {
+        margin-bottom: 8px;
+      }
+      #scroll h2 + p::first-letter {
+        font: 300 48px/1.4 'Roboto Slab';
+        margin-top: -2px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="scroll">
+      <ul id="container">
+          <li>
+            <h2 id="start" class="js-point" data-zoom="4" data-position="-96.6500523, 38.850033">Population</h2>
+            <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</p>
+            <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</p>
+            <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</p>
+          </li>
+          <li>
+            <h2 id="ny" class="js-point" data-zoom="13" data-position="-74.00363483, 40.757309">New york</h2>
+            <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</p>
+            <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</p>
+            <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</p>
+            <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</p>
+          </li>
+          <li>
+            <h2 id="sf" class="js-point" data-zoom="12" data-position="-122.472705, 37.7577627">San Francisco</h2>
+            <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</p>
+            <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</p>
+            <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</p>
+          </li>
+        </ul>
+      </div>
+  </div>
+  <div id="map"></div>
+
+  <div id="loading">
+    <div class="CDB-LoaderIcon CDB-LoaderIcon--big">
+      <svg class="CDB-LoaderIcon-spinner" viewBox="0 0 50 50">
+        <circle class="CDB-LoaderIcon-path" cx="25" cy="25" r="20" fill="none"></circle>
+      </svg>
+    </div>
+  </div>
+
+  <script>
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+      center: [-96.6500523, 38.850033],
+      zoom: 4,
+      dragRotate: false
+    });
+    
+
+    carto.setDefaultAuth({
+      user: 'piensaenpixel',
+      apiKey: 'default_public'
+    });
+    const s = carto.expressions;
+    const source = new carto.source.Dataset('block_group_dot_density');
+    const viz = new carto.Viz(`
+      width: 2
+      color: opacity(ramp(buckets($ethnicity,"white","hispanic", "asian", "black"),[#41599C,#089F94,#FF518C, #FF8A00]), 0.6)
+      resolution: 0.1
+    `);
+
+    const layer = new carto.Layer('layer', source, viz);
+
+    layer.addTo(map, 'watername_ocean');
+
+    layer.on('loaded', () => document.getElementById('loading').style.display = 'none')
+
+
+
+  document.getElementById("container").addEventListener("scroll", update);
+
+  var actualElement = null;
+  var points = document.getElementsByClassName('js-point');
+  var height = document.getElementById("container").getBoundingClientRect().height
+  var current = null;
+
+  function update() {
+    var actualElement = points[0];
+    var actualDistance = points[0].getBoundingClientRect().top;
+    for (var i=1; i<points.length; i++) {
+      var distanceToTop = points[i].getBoundingClientRect().top;
+      if (distanceToTop < (height - (height - 400) ) && distanceToTop > actualDistance)
+      {
+        actualElement = points[i]
+        actualDistance = points[i].getBoundingClientRect().top;
+      }
+    }
+    if ( current != actualElement) {
+      current = actualElement;
+      var coordinates = actualElement.dataset.position.split(", ");
+      map.flyTo({
+            center: [coordinates[0], coordinates[1]],
+            zoom: actualElement.dataset.zoom
+      });
+    }
+  }
+
+  var ps = new PerfectScrollbar('#container');
+
+
+  </script>
+</body>
+</html>
